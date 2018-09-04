@@ -26,7 +26,7 @@ public class Bookmark {
         return description;
     }
 
-    public BookmarkURL getUrl() {
+    public BookmarkURL getURL() {
         return url;
     }
 }
