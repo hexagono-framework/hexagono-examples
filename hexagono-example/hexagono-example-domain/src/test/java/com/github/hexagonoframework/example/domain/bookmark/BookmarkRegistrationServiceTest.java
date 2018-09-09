@@ -1,7 +1,7 @@
 package com.github.hexagonoframework.example.domain.bookmark;
 
 import static com.github.hexagonoframework.example.domain.bookmark.BookmarkMaker.Bookmark;
-import static com.github.hexagonoframework.example.domain.bookmark.BookmarkRepositoryMaker.BookmarkRepository;
+import static com.github.hexagonoframework.example.domain.bookmark.BookmarkRepositoryMaker.FakeBookmarkRepository;
 import static com.github.hexagonoframework.example.domain.bookmark.BookmarkRepositoryMaker.bookmarks;
 import static com.natpryce.makeiteasy.MakeItEasy.a;
 import static com.natpryce.makeiteasy.MakeItEasy.make;
@@ -21,11 +21,12 @@ public class BookmarkRegistrationServiceTest {
     BookmarkName name = new BookmarkName("Name");
     BookmarkDescription description = new BookmarkDescription("Description");
     BookmarkURL url = new BookmarkURL("http://test.url");
+    Throwable throwable;
 
     @Test
     public void registrationOK() {
         // given
-        repository = make(a(BookmarkRepository));
+        repository = make(a(FakeBookmarkRepository));
 
         // when
         service = new BookmarkRegistrationService(repository);
@@ -43,21 +44,23 @@ public class BookmarkRegistrationServiceTest {
     public void registrationWithNameAlreadyExisting() {
         // given
         Bookmark bookmark = make(a(Bookmark));
-        repository = make(a(BookmarkRepository, with(bookmarks, asList(bookmark))));
+        repository = make(a(FakeBookmarkRepository, with(bookmarks, asList(bookmark))));
 
         // when
         service = new BookmarkRegistrationService(repository);
-        Throwable throwable = catchThrowable(() -> service.register(bookmark.getName(), description, url));
+        throwable = catchThrowable(() -> service.register(bookmark.getName(), description, url));
 
         // then
         assertThat(throwable).isInstanceOf(BookmarkNameAlreadyExistsException.class);
+        BookmarkNameAlreadyExistsException exception = (BookmarkNameAlreadyExistsException) throwable;
+        assertEquals(bookmark.getName(), exception.getAlreadyExistingName());
     }
     
     @Test
     public void registrationWithURLAlreadyExisting() {
         // given
         Bookmark bookmark = make(a(Bookmark));
-        repository = make(a(BookmarkRepository, with(bookmarks, asList(bookmark))));
+        repository = make(a(FakeBookmarkRepository, with(bookmarks, asList(bookmark))));
 
         // when
         service = new BookmarkRegistrationService(repository);
@@ -65,6 +68,8 @@ public class BookmarkRegistrationServiceTest {
 
         // then
         assertThat(throwable).isInstanceOf(BookmarkURLAlreadyExistsException.class);
+        BookmarkURLAlreadyExistsException exception = (BookmarkURLAlreadyExistsException) throwable;
+        assertEquals(bookmark.getURL(), exception.getAlreadyExistingURL());
     }
 
 }

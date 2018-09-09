@@ -11,7 +11,7 @@ public class BookmarkRepositoryMaker {
 
     public static final Property<BookmarkRepository, List<Bookmark>> bookmarks = new Property<>();
     
-    public static final Instantiator<BookmarkRepository> BookmarkRepository = new Instantiator<BookmarkRepository>() {
+    public static final Instantiator<BookmarkRepository> FakeBookmarkRepository = new Instantiator<BookmarkRepository>() {
         
         @Override
         public BookmarkRepository instantiate(PropertyLookup<BookmarkRepository> lookup) {

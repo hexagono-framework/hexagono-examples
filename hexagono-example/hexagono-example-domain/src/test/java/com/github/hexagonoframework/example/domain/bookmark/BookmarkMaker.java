@@ -17,9 +17,9 @@ public class BookmarkMaker {
         public Bookmark instantiate(PropertyLookup<Bookmark> lookup) {
             Bookmark bookmark = new Bookmark(
                     lookup.valueOf(id, BookmarkId.generate()), 
-                    lookup.valueOf(name, new BookmarkName("Bookmark Name")), 
-                    lookup.valueOf(description, new BookmarkDescription("Bookmark Description")), 
-                    lookup.valueOf(url, new BookmarkURL("http://bookmark.url")));
+                    lookup.valueOf(name, new BookmarkName("Default Bookmark Name")), 
+                    lookup.valueOf(description, new BookmarkDescription("Default Bookmark Description")), 
+                    lookup.valueOf(url, new BookmarkURL("http://default.bookmark.url")));
             
             return bookmark;
         }
