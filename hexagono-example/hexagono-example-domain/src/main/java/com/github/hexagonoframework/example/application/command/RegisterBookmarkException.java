@@ -8,7 +8,7 @@ public class RegisterBookmarkException extends ApplicationException {
     
     private final transient ErrorCode errorCode;
     
-    public static enum ErrorCode {
+    public enum ErrorCode {
         INVALID_BOOKMARK_NAME,
         INVALID_BOOKMARK_DESCRIPTION,
         INVALID_BOOKMARK_URL,
@@ -29,6 +29,10 @@ public class RegisterBookmarkException extends ApplicationException {
     @Override
     public String errorCode() {
         return errorCode.name();
+    }
+    
+    public ErrorCode error() {
+        return errorCode;
     }
     
 }

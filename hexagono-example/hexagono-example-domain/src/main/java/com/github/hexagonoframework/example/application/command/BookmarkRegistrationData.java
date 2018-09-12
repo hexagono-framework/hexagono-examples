@@ -1,9 +1,16 @@
 package com.github.hexagonoframework.example.application.command;
 
-public class BookmarkRegistrationData {
+public final class BookmarkRegistrationData {
 
-    public String name;
-    public String description;
-    public String url;
+    public final String name;
+    public final String description;
+    public final String url;
+
+    public BookmarkRegistrationData(String name, String description, String url) {
+        super();
+        this.name = name;
+        this.description = description;
+        this.url = url;
+    }
     
 }
