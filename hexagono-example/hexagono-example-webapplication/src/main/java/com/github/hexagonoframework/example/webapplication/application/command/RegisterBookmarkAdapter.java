@@ -31,8 +31,9 @@ public class RegisterBookmarkAdapter extends RegisterBookmark {
     @Override
     public BookmarkId execute(RegistrationData data) {
         LOGGER.info("Registering bookmark with name " + data.name);
+        BookmarkId bookmarkId;
         try {
-            return super.execute(data);
+            bookmarkId = super.execute(data);
         } catch (RegisterBookmarkException e) {
             LOGGER.log(INFO, e.getMessage());
             throw e;
@@ -40,6 +41,9 @@ public class RegisterBookmarkAdapter extends RegisterBookmark {
             LOGGER.log(SEVERE, e.getMessage(), e);
             throw e;
         }
+        
+        LOGGER.info("Bookmark with name " + data.name + " registered");
+        return bookmarkId;
     }
 
 }
