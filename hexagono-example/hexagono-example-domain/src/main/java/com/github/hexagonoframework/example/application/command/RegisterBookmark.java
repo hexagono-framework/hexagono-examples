@@ -1,7 +1,12 @@
 package com.github.hexagonoframework.example.application.command;
 
-import static com.github.hexagonoframework.example.application.command.RegisterBookmarkException.ErrorCode.*;
+import static com.github.hexagonoframework.example.application.command.RegisterBookmark.ErrorCode.BOOKMARK_NAME_ALREADY_EXISTS;
+import static com.github.hexagonoframework.example.application.command.RegisterBookmark.ErrorCode.BOOKMARK_URL_ALREADY_EXISTS;
+import static com.github.hexagonoframework.example.application.command.RegisterBookmark.ErrorCode.INVALID_BOOKMARK_DESCRIPTION;
+import static com.github.hexagonoframework.example.application.command.RegisterBookmark.ErrorCode.INVALID_BOOKMARK_NAME;
+import static com.github.hexagonoframework.example.application.command.RegisterBookmark.ErrorCode.INVALID_BOOKMARK_URL;
 
+import com.github.hexagonoframework.example.application.ApplicationException;
 import com.github.hexagonoframework.example.domain.bookmark.Bookmark;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkDescription;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkId;
@@ -29,7 +34,7 @@ public class RegisterBookmark {
      * @return Bookmark ID registered
      * @throws RegisterBookmarkException Exception
      */
-    public BookmarkId execute(BookmarkRegistrationData data) {
+    public BookmarkId execute(RegistrationData data) {
         if (null == data.name) {
             throw new RegisterBookmarkException(INVALID_BOOKMARK_NAME, "Invalid bookmark name");
         }
@@ -57,6 +62,48 @@ public class RegisterBookmark {
         
         repository.store(bookmark);
         return bookmark.getId();
+    }
+    
+    public enum ErrorCode {
+        INVALID_BOOKMARK_NAME,
+        INVALID_BOOKMARK_DESCRIPTION,
+        INVALID_BOOKMARK_URL,
+        BOOKMARK_NAME_ALREADY_EXISTS,
+        BOOKMARK_URL_ALREADY_EXISTS
+    }
+    
+    public static class RegistrationData {
+
+        public final String name;
+        public final String description;
+        public final String url;
+
+        public RegistrationData(String name, String description, String url) {
+            this.name = name;
+            this.description = description;
+            this.url = url;
+        }
+    }
+    
+    public static class RegisterBookmarkException extends ApplicationException {
+
+        private static final long serialVersionUID = 1L;
+        private final ErrorCode errorCode;
+        
+        public RegisterBookmarkException(ErrorCode errorCode, String message) {
+            super(message);
+            this.errorCode = errorCode;
+        }
+        
+        public RegisterBookmarkException(ErrorCode errorCode, Throwable throwable) {
+            super(throwable.getMessage(), throwable);
+            this.errorCode = errorCode;
+        }
+        
+        public ErrorCode getErrorCode() {
+            return errorCode;
+        }
+        
     }
     
 }
