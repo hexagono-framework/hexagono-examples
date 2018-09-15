@@ -10,32 +10,31 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.github.hexagonoframework.example.application.command.BookmarkData;
-import com.github.hexagonoframework.example.application.command.RegisterBookmark;
+import com.github.hexagonoframework.example.application.command.UpdateBookmark;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkId;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkRepository;
 
 @Dependent
 @Stateless
-public class RegisterBookmarkAdapter extends RegisterBookmark {
+public class UpdateBookmarkAdapter extends UpdateBookmark {
 
-    private static final Logger LOGGER = Logger.getLogger(RegisterBookmarkAdapter.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(UpdateBookmarkAdapter.class.getSimpleName());
     
-    public RegisterBookmarkAdapter() {
+    public UpdateBookmarkAdapter() {
         this(null);
     }
     
     @Inject
-    public RegisterBookmarkAdapter(BookmarkRepository repository) {
+    public UpdateBookmarkAdapter(BookmarkRepository repository) {
         super(repository);
     }
     
     @Override
-    public BookmarkId execute(BookmarkData data) {
-        LOGGER.info("Registering bookmark with name " + data.name);
-        BookmarkId bookmarkId;
+    public void execute(BookmarkId id, BookmarkData data) {
+        LOGGER.info("Changing bookmark with id " + id.getValue());
         try {
-            bookmarkId = super.execute(data);
-        } catch (RegisterBookmarkException e) {
+            super.execute(id, data);
+        } catch (UpdateBookmarkException e) {
             LOGGER.log(INFO, e.getMessage());
             throw e;
         } catch (RuntimeException e) {
@@ -43,8 +42,7 @@ public class RegisterBookmarkAdapter extends RegisterBookmark {
             throw e;
         }
         
-        LOGGER.info("Bookmark with name " + data.name + " registered");
-        return bookmarkId;
+        LOGGER.info("Bookmark with name " + data.name + " changed");
     }
 
 }

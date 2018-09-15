@@ -21,7 +21,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.github.hexagonoframework.example.application.command.RegisterBookmark.RegisterBookmarkException;
-import com.github.hexagonoframework.example.application.command.RegisterBookmark.RegistrationData;
 import com.github.hexagonoframework.example.domain.bookmark.Bookmark;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkId;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkRepository;
@@ -30,7 +29,7 @@ public class RegisterBookmarkTest {
 
     BookmarkRepository repository;
     RegisterBookmark command;
-    RegistrationData data;
+    BookmarkData data;
 
     String name;
     String description;
@@ -49,7 +48,7 @@ public class RegisterBookmarkTest {
     public void registrationWithNullName() {
         // given
         name = null;
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
 
         // when
         RegisterBookmarkException exception = (RegisterBookmarkException) catchThrowable(() -> command.execute(data));
@@ -63,7 +62,7 @@ public class RegisterBookmarkTest {
     public void registrationWithNullDescription() {
         // given
         description = null;
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
 
         // when
         RegisterBookmarkException exception = (RegisterBookmarkException) catchThrowable(() -> command.execute(data));
@@ -77,7 +76,7 @@ public class RegisterBookmarkTest {
     public void registrationWithNullURL() {
         // given
         url = null;
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
 
         // when
         RegisterBookmarkException exception = (RegisterBookmarkException) catchThrowable(() -> command.execute(data));
@@ -94,7 +93,7 @@ public class RegisterBookmarkTest {
         repository = make(a(FakeBookmarkRepository, with(bookmarks, asList(bookmark))));
         command = new RegisterBookmark(repository);
         name = bookmark.getName().getValue();
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
 
         // when
         Throwable throwable = catchThrowable(() -> command.execute(data));
@@ -112,7 +111,7 @@ public class RegisterBookmarkTest {
         repository = make(a(FakeBookmarkRepository, with(bookmarks, asList(bookmark))));
         command = new RegisterBookmark(repository);
         url = bookmark.getURL().getValue();
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
 
         // when
         Throwable throwable = catchThrowable(() -> command.execute(data));
@@ -126,7 +125,7 @@ public class RegisterBookmarkTest {
     @Test
     public void registrationOK() {
         // given
-        data = new RegistrationData(name, description, url);
+        data = new BookmarkData(name, description, url);
         
         // when
         BookmarkId bookmarkId = command.execute(data);

@@ -34,7 +34,7 @@ public class RegisterBookmark {
      * @return Bookmark ID registered
      * @throws RegisterBookmarkException Exception
      */
-    public BookmarkId execute(RegistrationData data) {
+    public BookmarkId execute(BookmarkData data) throws RegisterBookmarkException {
         if (null == data.name) {
             throw new RegisterBookmarkException(INVALID_BOOKMARK_NAME, "Invalid bookmark name");
         }
@@ -70,19 +70,6 @@ public class RegisterBookmark {
         INVALID_BOOKMARK_URL,
         BOOKMARK_NAME_ALREADY_EXISTS,
         BOOKMARK_URL_ALREADY_EXISTS
-    }
-    
-    public static class RegistrationData {
-
-        public final String name;
-        public final String description;
-        public final String url;
-
-        public RegistrationData(String name, String description, String url) {
-            this.name = name;
-            this.description = description;
-            this.url = url;
-        }
     }
     
     public static class RegisterBookmarkException extends ApplicationException {

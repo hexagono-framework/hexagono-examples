@@ -20,6 +20,9 @@ public class BookmarkRest {
 
     @Inject
     private CreateRestAdapter createRestAdapter;
+    
+    @Inject
+    private UpdateRestAdapter updateRestAdapter;
 
     @Inject
     private GetByIdRestAdapter getByIdRestAdapter;
@@ -28,8 +31,16 @@ public class BookmarkRest {
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(@Context UriInfo uriInfo, CreateBookmarkRequest request) {
+    public Response create(@Context UriInfo uriInfo, BookmarkDataRequest request) {
         return createRestAdapter.create(uriInfo, request);
+    }
+    
+    @POST
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") String id, BookmarkDataRequest request) {
+        return updateRestAdapter.update(id, request);
     }
 
     @GET

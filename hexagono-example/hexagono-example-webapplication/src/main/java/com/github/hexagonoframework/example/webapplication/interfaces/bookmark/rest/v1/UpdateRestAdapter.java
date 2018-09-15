@@ -6,42 +6,38 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
 
 import com.github.hexagonoframework.example.application.command.BookmarkData;
-import com.github.hexagonoframework.example.application.command.RegisterBookmark.RegisterBookmarkException;
+import com.github.hexagonoframework.example.application.command.UpdateBookmark.UpdateBookmarkException;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkId;
-import com.github.hexagonoframework.example.webapplication.application.command.RegisterBookmarkAdapter;
+import com.github.hexagonoframework.example.webapplication.application.command.UpdateBookmarkAdapter;
 import com.github.hexagonoframework.example.webapplication.infrastructure.jaxrs.ErrorResponseEntity;
 
 @Dependent
-public class CreateRestAdapter {
+public class UpdateRestAdapter {
 
     private enum ErrorCodes {
         BOOKMARK_NAME_ALREADY_EXISTS, 
-        BOOKMARK_URL_ALREADY_EXISTS, 
+        BOOKMARK_URL_ALREADY_EXISTS,
+        BOOKMARK_DOES_NOT_EXIST,
         INVALID_REQUEST
     }
     
     @Inject
-    private RegisterBookmarkAdapter registerBookmarkAdapter;
+    private UpdateBookmarkAdapter updateBookmarkAdapter;
     
-    public Response create(UriInfo uriInfo, BookmarkDataRequest request) {
-        BookmarkId bookmarkId;
+    public Response update(String id, BookmarkDataRequest request) {
         try {
             BookmarkData data = new BookmarkData(request.name, request.description, request.url);
-            bookmarkId = registerBookmarkAdapter.execute(data);
-        } catch (RegisterBookmarkException e) {
+            updateBookmarkAdapter.execute(new BookmarkId(id), data);
+        } catch (UpdateBookmarkException e) {
             throw new BadRequestException(createErrorResponse(e), e);
         }
 
-        UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-        uriBuilder.path(bookmarkId.getValue());
-        return Response.created(uriBuilder.build()).build();
+        return Response.noContent().build();
     }
     
-    private Response createErrorResponse(RegisterBookmarkException e) {
+    private Response createErrorResponse(UpdateBookmarkException e) {
         ErrorResponseEntity entity;
         switch (e.getErrorCode()) {
         case BOOKMARK_NAME_ALREADY_EXISTS:

@@ -1,6 +1,6 @@
 package com.github.hexagonoframework.example.webapplication.interfaces.bookmark.rest.v1;
 
-public class CreateBookmarkRequest {
+public class BookmarkDataRequest {
 
     public String name;
     public String description;
