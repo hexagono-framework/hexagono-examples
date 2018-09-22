@@ -16,16 +16,9 @@ import com.github.hexagonoframework.example.webapplication.infrastructure.jaxrs.
 @Dependent
 public class UpdateRestAdapter {
 
-    private enum ErrorCodes {
-        BOOKMARK_NAME_ALREADY_EXISTS, 
-        BOOKMARK_URL_ALREADY_EXISTS,
-        BOOKMARK_DOES_NOT_EXIST,
-        INVALID_REQUEST
-    }
-    
     @Inject
     private UpdateBookmarkAdapter updateBookmarkAdapter;
-    
+
     public Response update(String id, BookmarkDataRequest request) {
         try {
             BookmarkData data = new BookmarkData(request.name, request.description, request.url);
@@ -36,22 +29,21 @@ public class UpdateRestAdapter {
 
         return Response.noContent().build();
     }
-    
+
     private Response createErrorResponse(UpdateBookmarkException e) {
         ErrorResponseEntity entity;
         switch (e.getErrorCode()) {
-        case BOOKMARK_NAME_ALREADY_EXISTS:
-            entity = new ErrorResponseEntity(ErrorCodes.BOOKMARK_NAME_ALREADY_EXISTS.name(), e.getMessage());
-            break;
-        case BOOKMARK_URL_ALREADY_EXISTS:
-            entity = new ErrorResponseEntity(ErrorCodes.BOOKMARK_URL_ALREADY_EXISTS.name(), e.getMessage());
-            break;
+        case INVALID_BOOKMARK_ID:
+        case INVALID_BOOKMARK_NAME:
+        case INVALID_BOOKMARK_DESCRIPTION:
+        case INVALID_BOOKMARK_URL:
+            entity = new ErrorResponseEntity("INVALID_REQUEST", e.getMessage());
         default:
-            entity = new ErrorResponseEntity(ErrorCodes.INVALID_REQUEST.name(), e.getMessage());
+            entity = new ErrorResponseEntity(e.getErrorCode().name(), e.getMessage());
             break;
         }
 
         return Response.status(BAD_REQUEST).entity(entity).build();
     }
-    
+
 }

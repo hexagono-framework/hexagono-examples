@@ -3,15 +3,12 @@ package com.github.hexagonoframework.example.webapplication.infrastructure.inmem
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.enterprise.context.ApplicationScoped;
-
 import com.github.hexagonoframework.example.domain.bookmark.Bookmark;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkId;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkName;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkRepository;
 import com.github.hexagonoframework.example.domain.bookmark.BookmarkURL;
 
-@ApplicationScoped
 public class InMemoryBookmarkRepository implements BookmarkRepository {
 
     private final Map<BookmarkId, Bookmark> bookmarks = new LinkedHashMap<>();
