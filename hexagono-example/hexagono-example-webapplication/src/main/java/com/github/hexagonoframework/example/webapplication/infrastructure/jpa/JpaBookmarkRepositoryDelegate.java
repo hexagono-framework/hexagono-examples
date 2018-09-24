@@ -7,7 +7,7 @@ import org.apache.deltaspike.data.api.Repository;
 
 @Dependent
 @Repository
-public interface BookmarkRepositoryDelegate extends EntityRepository<JpaBookmark, String> {
+public interface JpaBookmarkRepositoryDelegate extends EntityRepository<JpaBookmark, String> {
 
     JpaBookmark findAnyByName(String name);
 

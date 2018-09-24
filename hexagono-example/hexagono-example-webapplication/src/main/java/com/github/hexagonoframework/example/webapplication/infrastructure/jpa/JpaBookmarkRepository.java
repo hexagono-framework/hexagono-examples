@@ -14,12 +14,12 @@ import com.github.hexagonoframework.example.domain.bookmark.BookmarkURL;
 public class JpaBookmarkRepository implements BookmarkRepository {
 
     @Inject
-    private BookmarkRepositoryDelegate delegate;
+    private JpaBookmarkRepositoryDelegate delegate;
     
     @Override
     public void store(Bookmark bookmark) {
         JpaBookmark entity = Assembler.toEntity(bookmark);
-        delegate.save(entity);
+        delegate.saveAndFlush(entity);
     }
 
     @Override
