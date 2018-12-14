@@ -5,7 +5,7 @@
 	
 	<assembly-descriptor>
 		<application-exception>
-			<exception-class>com.github.hexagonoframework.example.application.ApplicationException</exception-class>
+			<exception-class>com.github.hexagonoframework.ApplicationException</exception-class>
 			<rollback>true</rollback>
 		</application-exception>
 	</assembly-descriptor>

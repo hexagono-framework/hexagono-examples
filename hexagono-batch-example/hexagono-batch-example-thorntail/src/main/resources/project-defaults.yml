@@ -1,0 +1,29 @@
+thorntail:
+  management:
+    security-realms:
+      ManagementRealm:
+        in-memory-authentication:
+          users:
+            admin:
+              password: admin@123
+    http-interface-management-interface:
+      allowed-origins:
+        - http://localhost:8080      
+      security-realm: ManagementRealm
+      console-enabled: true  
+  datasources:
+    data-sources:
+      PostgresDS:
+        driver-name: postgresql
+        connection-url: jdbc:postgresql://localhost:5432/exampledb
+        user-name: postgres
+        password: postgres
+        valid-connection-checker-class-name: org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker
+        validate-on-match: true
+        background-validation: false
+        exception-sorter-class-name: org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter
+  batch:
+    default-job-repository: postgres
+    jdbc-job-repositories:
+      postgres:
+        data-source: PostgresDS    
